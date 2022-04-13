@@ -2387,7 +2387,10 @@ bool ZedCamera::startCamera()
 
     while (1) {
         std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
+        
+        //Streaming parameters
+        sl::StreamingParameters stream_params;
+        
         mConnStatus = mZed.open(mInitParams);
 
         if (mConnStatus == sl::ERROR_CODE::SUCCESS) {
