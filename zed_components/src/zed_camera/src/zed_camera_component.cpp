@@ -2392,6 +2392,20 @@ bool ZedCamera::startCamera()
 
         if (mConnStatus == sl::ERROR_CODE::SUCCESS) {
             RCLCPP_DEBUG(get_logger(), "Opening successfull");
+            stream_params.codec = sl::STREAMING_CODEC::H264;
+            stream_params.bitrate = 8000;
+            stream_params.chunk_size = 4096;
+                /*
+                Default IP and Port
+                    mInitParams.input.setFromStream(sl::String("127.0.0.1"));
+                    stream_params.port = 30000
+                */
+            mConnStatus = mZed.enableStreaming(stream_params);
+            if (mConnStatus != sl::ERROR_CODE::SUCCESS) {
+                RCLCPP_ERROR_STREAM(get_logger(), "Streaming initialization error: " << sl::toString(mConnStatus));
+                return EXIT_FAILURE;
+            }
+            RCLCPP_INFO(get_logger(), "Streaming on port " + std::to_string(stream_params.port)); 
             break;
         }
 
