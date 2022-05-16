@@ -2419,15 +2419,15 @@ bool ZedCamera::startCamera()
 
         mInitParams.input.setFromStream("127.0.0.1", 30000); // Specify the IP and port of the sender
             // Open the camera
-        ERROR_CODE err = zed.open(mInitParams);
+        mConnStatus = mZed.open(mInitParams);
         if (mConnStatus == sl::ERROR_CODE::SUCCESS) {
-            stream_params.codec = STREAMING_CODEC::H264;
+            stream_params.codec = sl::STREAMING_CODEC::H264;
             stream_params.bitrate = 8000;
             stream_params.chunk_size = 4096;
             //nitParameters.input.setFromStream("127.0.0.1", 30000);
 
-            returned_state = zed.enableStreaming(stream_params);
-            if (returned_state != ERROR_CODE::SUCCESS) {
+            mConnStatus = mZed.enableStreaming(stream_params);
+            if (mConnStatus != sl::ERROR_CODE::SUCCESS) {
                 RCLCPP_ERROR_STREAM(get_logger(), "Streaming initialization error: " << sl::toString(mConnStatus));
                 return EXIT_FAILURE;
             }
