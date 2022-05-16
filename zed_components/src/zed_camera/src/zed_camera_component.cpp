@@ -2436,11 +2436,9 @@ bool ZedCamera::startCamera()
 
         if (mConnStatus == sl::ERROR_CODE::SUCCESS) {
             RCLCPP_DEBUG(get_logger(), "Opening successfull");
-
-
+#endif
             break;
         }
-#endif
 
         if (mSvoMode) {
             RCLCPP_WARN(get_logger(),
