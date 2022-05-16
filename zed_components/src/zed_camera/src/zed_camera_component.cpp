@@ -2395,12 +2395,12 @@ bool ZedCamera::startCamera()
         //Streaming parameters
         sl::StreamingParameters stream_params;
         
+#if (STREAM_MODE == 1)
         mConnStatus = mZed.open(mInitParams);
 
         if (mConnStatus == sl::ERROR_CODE::SUCCESS) {
             RCLCPP_DEBUG(get_logger(), "Opening successfull");
 
-#if (STREAM_MODE == 1)
             stream_params.codec = sl::STREAMING_CODEC::H264;
             stream_params.bitrate = 8000;
             stream_params.chunk_size = 4096;
@@ -2417,6 +2417,10 @@ bool ZedCamera::startCamera()
             RCLCPP_INFO(get_logger(), "Streaming on port " + std::to_string(stream_params.port)); 
 #elif (STREAM_MODE == 2)
 
+        mInitParams.input.setFromStream("127.0.0.1", 30000); // Specify the IP and port of the sender
+            // Open the camera
+        ERROR_CODE err = zed.open(mInitParams);
+        if (mConnStatus == sl::ERROR_CODE::SUCCESS) {
             stream_params.codec = STREAMING_CODEC::H264;
             stream_params.bitrate = 8000;
             stream_params.chunk_size = 4096;
@@ -2427,10 +2431,16 @@ bool ZedCamera::startCamera()
                 RCLCPP_ERROR_STREAM(get_logger(), "Streaming initialization error: " << sl::toString(mConnStatus));
                 return EXIT_FAILURE;
             }
-#endif
+#else
+        mConnStatus = mZed.open(mInitParams);
+
+        if (mConnStatus == sl::ERROR_CODE::SUCCESS) {
+            RCLCPP_DEBUG(get_logger(), "Opening successfull");
+
 
             break;
         }
+#endif
 
         if (mSvoMode) {
             RCLCPP_WARN(get_logger(),
