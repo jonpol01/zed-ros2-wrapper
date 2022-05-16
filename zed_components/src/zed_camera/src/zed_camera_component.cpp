@@ -2417,14 +2417,14 @@ bool ZedCamera::startCamera()
             RCLCPP_INFO(get_logger(), "Streaming on port " + std::to_string(stream_params.port)); 
 #elif (STREAM_MODE == 2)
 
-        mInitParams.input.setFromStream("127.0.0.1", 30000); // Specify the IP and port of the sender
+        //mInitParams.input.setFromStream("127.0.0.1", 30000); // Specify the IP and port of the sender
+        mInitParams.input.setFromStream("127.0.0.1");
             // Open the camera
         mConnStatus = mZed.open(mInitParams);
         if (mConnStatus == sl::ERROR_CODE::SUCCESS) {
             stream_params.codec = sl::STREAMING_CODEC::H264;
             stream_params.bitrate = 8000;
             stream_params.chunk_size = 4096;
-            //nitParameters.input.setFromStream("127.0.0.1", 30000);
 
             mConnStatus = mZed.enableStreaming(stream_params);
             if (mConnStatus != sl::ERROR_CODE::SUCCESS) {
