@@ -2426,11 +2426,11 @@ bool ZedCamera::startCamera()
             stream_params.bitrate = 8000;
             stream_params.chunk_size = 4096;
 
-            mConnStatus = mZed.enableStreaming(stream_params);
+            /*mConnStatus = mZed.enableStreaming(stream_params);
             if (mConnStatus != sl::ERROR_CODE::SUCCESS) {
                 RCLCPP_ERROR_STREAM(get_logger(), "Streaming initialization error: " << sl::toString(mConnStatus));
                 return EXIT_FAILURE;
-            }
+            }*/
 #else
         mConnStatus = mZed.open(mInitParams);
 
